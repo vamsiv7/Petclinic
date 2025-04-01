@@ -8,7 +8,7 @@
     <h2 id="veterinarians">NonVeterinarians</h2>
 
     <div class="row">
-        <table id="vetsTable" class="table table-striped" aria-describedby="veterinarians">
+        <table id="vetsTable" class="table table-striped" aria-describedby="NOnveterinarians">
             <thead>
             <tr>
                 <th scope="col">Name</th>
