@@ -1,6 +1,12 @@
 pipeline{
 
     agent any
+    
+    tools {
+	    maven "Maven"
+        
+	 	}
+
 
     stages{
 
@@ -38,6 +44,18 @@ pipeline{
         }
 
        }
+
+     stage('Sonarqube Analysis'){
+        steps{
+           sh "mvn clean verify sonar:sonar \
+         -Dsonar.projectKey='spring-petclinic' \
+         -Dsonar.projectName='spring-petclinic' \
+         -Dsonar.host.url='http://localhost:9000' \
+         -Dsonar.token=sqp_b678f83ca558a3bb7735efadfdbd4697adbebc28"
+        }
+
+       }
+    
 
        stage('Deploy to Tomcat Server'){
         steps{
