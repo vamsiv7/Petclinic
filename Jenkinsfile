@@ -27,9 +27,9 @@ pipeline {
                archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
             }
         }
-		stage('Deploy') {
+		stage('Deploy to Tomcat Server') {
         steps {
-            echo 'Hello World'
+            deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'Tomcat', path: '', url: 'http://localhost:8080')], contextPath: 'Petclinic', war: 'target/*.war'
         }
     }
     }
