@@ -14,11 +14,12 @@ pipeline {
         }
         stage('SonarQube Server') {
             steps {
-              sh"mvn clean verify sonar:sonar\
-  -Dsonar.projectKey='Petclinic'\
+                bat 'mvn install'
+              bat '''mvn sonar:sonar\
+  -Dsonar.projectKey=Petclinic\
   -Dsonar.projectName='Petclinic'\
-  -Dsonar.host.url='http://localhost:9000'\
-  -Dsonar.token=sqp_2cca513fa1211759366913d7a715b19541debb77" 
+  -Dsonar.host.url=http://localhost:9000\
+  -Dsonar.token=sqp_2cca513fa1211759366913d7a715b19541debb77'''
             }
         }
           stage('Generate Artifacts') {
