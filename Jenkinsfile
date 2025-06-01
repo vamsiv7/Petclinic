@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/Lakshmikdev21/Petclinic.git'
+                git branch: 'main', url: 'https://github.com/vamsiv7/Petclinic.git'
             }
         }
           stage('Build') {
@@ -16,10 +16,10 @@ pipeline {
             steps {
                 bat 'mvn install'
               bat '''mvn sonar:sonar\
-  -Dsonar.projectKey=Petclinic\
-  -Dsonar.projectName='Petclinic'\
-  -Dsonar.host.url=http://localhost:9000\
-  -Dsonar.token=sqp_2cca513fa1211759366913d7a715b19541debb77'''
+         -Dsonar.projectKey=Petclinic \
+         -Dsonar.projectName='Petclinic' \
+         -Dsonar.host.url=http://localhost:9000 \
+         -Dsonar.token=sqp_53efb685409b588423820400938fced5a343dbe0'''
             }
         }
           stage('Generate Artifacts') {
@@ -29,8 +29,6 @@ pipeline {
         }
 		stage('Deploy to Tomcat Server') {
         steps {
-            deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'Tomcat', path: '', url: 'http://localhost:8080')], contextPath: 'Petclinic', war: 'target/*.war'
-        }
-    }
+            deploy adapters: [tomcat9(alternativeDeploymentContext: '', path: '', url: 'http://localhost:9090')], contextPath: 'Sonarqube', war: 'target/*.war'
     }
 }
