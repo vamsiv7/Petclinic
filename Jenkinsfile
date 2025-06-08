@@ -1,4 +1,9 @@
 pipeline {
+
+    tools{
+         
+         maven 'maven'
+    }
     agent any
  
     stages {
@@ -12,6 +17,8 @@ pipeline {
                bat 'mvn clean install'
             }
         }
+
+
         stage('SonarQube Server') {
             steps {
                 bat 'mvn install'
@@ -22,6 +29,46 @@ pipeline {
          -Dsonar.token=sqp_53efb685409b588423820400938fced5a343dbe0'''
             }
         }
+
+
+ stage('Artifactory Server') {
+     steps {
+         rtServer (
+         id: 'Artifactory",
+         url:'http://localhost:8081/artifactory
+         username:'admin',
+         password: 'password',
+         bypassProxy: true
+         timeout: 300
+              )
+     }
+ }
+
+ stage('Upload') {
+    steps {
+         rtDownload (
+         serverId: 'Artifactory',
+         spec: '''{
+          "files": [
+              {
+          "pattern": "*.war",
+           "target": "SRinfotech-private-limited",
+             }
+                  ]
+                  }''', 
+                  )
+                                   
+     }                              
+ }
+
+   stage('Publish Build info') {
+     steps {
+         rtPublishBuildInfo (
+          serverId: 'Artifactory',  
+        )
+          
+    }
+ }
           stage('Generate Artifacts') {
             steps {
                archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
