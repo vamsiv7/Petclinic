@@ -12,14 +12,29 @@ pipeline {
                 git branch: 'release/2025.06.08', url: 'https://github.com/vamsiv7/Petclinic.git'
             }
         }
-          stage('Build') {
+         stages {
+        stage('Build') {
             steps {
-               bat 'mvn clean install'
+                bat 'mvn clean install'
+          
             }
+        }
+         stages {
+        stage('Test Cases') {
+            steps {
+                bat'mvn Test'
+            }
+        }
+        stage{
+       stage('package')
+          steps {
+              bat 'mvn package'
+          }
+            
         }
 
 
-        stage('SonarQube Server') {
+        stage('SonarQube Analysis') {
             steps {
                 bat 'mvn install'
               bat '''mvn sonar:sonar\
